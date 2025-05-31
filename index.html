@@ -4,37 +4,27 @@
   <meta charset="UTF-8">
   <title>TeraBox Viewer</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-    }
-    #result {
-      margin-top: 20px;
-    }
-    a {
-      word-break: break-all;
-      color: blue;
-    }
+    body { font-family: Arial; padding: 20px; }
+    #result { margin-top: 20px; display: none; }
+    pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>TeraBox Video Viewer</h1>
-    <input type="text" id="urlInput" placeholder="Paste TeraBox link here" style="width: 100%;">
-    <button onclick="fetchVideo()">Load Video</button>
+  <h1>TeraBox Video Viewer</h1>
+  <input type="text" id="urlInput" placeholder="Paste TeraBox link here" style="width: 60%;">
+  <button onclick="fetchVideo()">Load Video</button>
 
-    <div id="result" style="display:none;">
-      <h2 id="fileName"></h2>
-      <img id="thumb" alt="Thumbnail" width="300">
-      <p><strong>Size:</strong> <span id="fileSize"></span></p>
-      <p><strong>Download URL:</strong><br>
-        <a id="downloadURL" href="#" target="_blank"></a>
-      </p>
-    </div>
+  <div id="result">
+    <h2 id="fileName"></h2>
+    <img id="thumb" alt="Thumbnail" width="300"><br>
+    <strong>Size:</strong> <span id="fileSize"></span><br><br>
+    <video id="videoPlayer" width="600" controls></video><br><br>
+
+    <strong>Download URL:</strong>
+    <p><a id="downloadURL" href="#" target="_blank"></a></p>
+
+    <h3>Raw JSON:</h3>
+    <pre id="rawJSON"></pre>
   </div>
 
   <script>
@@ -51,10 +41,14 @@
             document.getElementById('fileName').innerText = file.file_name;
             document.getElementById('fileSize').innerText = file.size;
             document.getElementById('thumb').src = file.thumb;
+            document.getElementById('videoPlayer').src = file.stream_url;
 
-            const downloadURL = document.getElementById('downloadURL');
-            downloadURL.href = file.download_url;
-            downloadURL.innerText = file.download_url;
+            // Show the direct download URL instead of using download attribute
+            document.getElementById('downloadURL').href = file.download_url;
+            document.getElementById('downloadURL').innerText = file.download_url;
+
+            // Show raw JSON
+            document.getElementById('rawJSON').innerText = JSON.stringify(file, null, 2);
 
             document.getElementById('result').style.display = 'block';
           } else {
