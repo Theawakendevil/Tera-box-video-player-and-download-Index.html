@@ -4,21 +4,94 @@
   <meta charset="UTF-8">
   <title>TeraBox Viewer</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    #result { margin-top: 20px; display: none; }
-    pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f5f5f5;
+      font-size: 18px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 60%;
+      padding: 12px 15px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 30px;
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    video, img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      text-align: left;
+      padding: 15px;
+      font-size: 14px;
+      overflow-x: auto;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+
+    a {
+      word-break: break-all;
+      color: #007BFF;
+    }
+
+    strong {
+      display: inline-block;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <h1>TeraBox Video Viewer</h1>
-  <input type="text" id="urlInput" placeholder="Paste TeraBox link here" style="width: 60%;">
+  <input type="text" id="urlInput" placeholder="Paste TeraBox link here">
   <button onclick="fetchVideo()">Load Video</button>
 
   <div id="result">
     <h2 id="fileName"></h2>
-    <img id="thumb" alt="Thumbnail" width="300"><br>
+    <img id="thumb" alt="Thumbnail"><br>
     <strong>Size:</strong> <span id="fileSize"></span><br><br>
-    <video id="videoPlayer" width="600" controls></video><br><br>
+    <video id="videoPlayer" controls></video><br><br>
 
     <strong>Download URL:</strong>
     <p><a id="downloadURL" href="#" target="_blank"></a></p>
@@ -42,12 +115,8 @@
             document.getElementById('fileSize').innerText = file.size;
             document.getElementById('thumb').src = file.thumb;
             document.getElementById('videoPlayer').src = file.stream_url;
-
-            // Show the direct download URL instead of using download attribute
             document.getElementById('downloadURL').href = file.download_url;
             document.getElementById('downloadURL').innerText = file.download_url;
-
-            // Show raw JSON
             document.getElementById('rawJSON').innerText = JSON.stringify(file, null, 2);
 
             document.getElementById('result').style.display = 'block';
